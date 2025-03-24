@@ -1,162 +1,330 @@
-<meta charset="UTF-8">
-<!-- VUEJS -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<!--  BOOTSTRAP DATA -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+<!DOCTYPE html>
+<html lang="pt-br">
 
-<div id="app" >
-  <div class="container-fluid">
-    <div class="row">
-      <nav class="navbar navbar-dark bg-dark dense">
-        <span style="color: white;">Score: {{ score }}</span>
-        <span style="color: white;">Chances: {{ chance }}</span>
-        
-        <div v-if="startGame" style="display: flex; flex-direction: row;">
-          <span style="color: white; margin-right: 0.5rem;"> {{ message }} </span>
-          <div id="RoundColor" :style="{backgroundColor: corRound}" style="height: 1.6rem; width: 1.6rem; border-radius: 25px;"></div>
+<head>
+
+  <head>
+    <meta charset="UTF-8">
+    <!-- VUEJS -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--  BOOTSTRAP DATA -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+      integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
+      integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
+      crossorigin="anonymous"></script>
+
+
+    <link rel="icon" type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23000' viewBox='0 0 16 16'><path d='M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1m2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1m-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1z'/><path d='M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729q.211.136.373.297c.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466s.34 1.78.364 2.606c.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527s-2.496.723-3.224 1.527c-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.3 2.3 0 0 1 .433-.335l-.028-.079zm2.036.412c-.877.185-1.469.443-1.733.708-.276.276-.587.783-.885 1.465a14 14 0 0 0-.748 2.295 12.4 12.4 0 0 0-.339 2.406c-.022.755.062 1.368.243 1.776a.42.42 0 0 0 .426.24c.327-.034.61-.199.929-.502.212-.202.4-.423.615-.674.133-.156.276-.323.44-.504C4.861 9.969 5.978 9.027 8 9.027s3.139.942 3.965 1.855c.164.181.307.348.44.504.214.251.403.472.615.674.318.303.601.468.929.503a.42.42 0 0 0 .426-.241c.18-.408.265-1.02.243-1.776a12.4 12.4 0 0 0-.339-2.406 14 14 0 0 0-.748-2.295c-.298-.682-.61-1.19-.885-1.465-.264-.265-.856-.523-1.733-.708-.85-.179-1.877-.27-2.913-.27s-2.063.091-2.913.27'/></svg>">
+    <title>Jogo das cores</title>
+  </head>
+</head>
+
+<body>
+  <div id="app">
+    <div class="container-fluid vh-100 d-flex flex-column p-0">
+
+      <!-- Navbar Superior -->
+      <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container-fluid justify-content-between">
+          <div class="d-flex gap-3 align-items-center">
+            <span class="text-light fw-bold">Pontos: {{ score }}</span>
+            <span class="text-light fw-bold">Tempo: {{ timing }}s</span>
+            <span class="text-warning fw-bold">Chances: {{ chance }}</span>
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <div v-if="startGame" class="d-flex align-items-center gap-2">
+              <span class="text-light">{{ message }}</span>
+              <div id="RoundColor" :style="{backgroundColor: corRound}" class="color-indicator"></div>
+            </div>
+            <span v-else class="text-light">Vamos brincar!</span>
+          </div>
+
+          <div class="d-flex gap-3 align-items-center">
+            <span class="text-info fw-bold">Record: {{ record }}</span>
+            <button @click="!startGame ? startInit() : fimGame()" class="btn btn-sm"
+              :class="startGame ? 'btn-danger' : 'btn-success'">
+              {{ startGame ? 'Stop Game' : 'Start Game' }}
+            </button>
+          </div>
         </div>
-        <div v-else>
-          <span style="color: white;"> Vamos brincar! </span>
-        </div>
-        <span style="color: white;">Record: {{ record }}</span>
-        <button v-if="!startGame" @click="startInit" type="button" class="btn btn-primary btn-sm">Start</button>
-        <button v-else @click="fimGame()" type="button" class="btn btn-primary btn-sm">Stop</button>
       </nav>
-    </div>
-    <div class="row">
-      <div  style="height: 35.2rem;" class="col" style="background-color: #ADD8E6;">
-        <div class="container-fluid bg-secondary" style="margin-top: 1.2rem; height: 33rem; width: 33rem; border-radius: 1rem;">
-          <table v-if="startGame" style="display: flex; flex-direction: column; justify-content: center; align-items: center;" class="table table-borderless ">
+
+      <!-- Área Principal do Jogo -->
+      <main class="flex-grow-1  d-flex align-items-center justify-content-center">
+        <div class="game-container p-3 rounded-3 shadow-lg" style="cursor: pointer;">
+
+          <table v-if="startGame"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center;" class="table ">
             <tbody>
-              <tr v-for="c in 8" class="m-0 pa-0">
-                <td v-for="i in 8">
-                  <div
-                    :id=`${c}${i}`
-                    :style="{backgroundColor: randonColor()}" 
-                    style="height: 3rem; width: 3rem; border-radius: 25px;"
-                    @click="consulta(this.event.srcElement)"
-                  />
+              <tr v-for="(c, cind) in tableColors" class="m-0 pa-0">
+                <td v-for="(i, iind) in c" class="grid-cell">
+                  <div :id=`${cind}${cind}` :style="{backgroundColor: i}"
+                    style="height: 3rem; width: 3rem; border-radius: 25px;" @click="consulta(cind, iind)" />
                 </td>
               </tr>
             </tbody>
           </table>
-          <div v-else style="text-align: center;">
-            <span style="color: white; font-size: 64px; ">Aguardando start!</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div style="color: white; height: 1.9rem" class="col bg-dark bg-gradient">
-        <span style="color: white;">Marlon Rodrigues - </span>
-        <span style="color: white;">Ciência da computação 2020/5</span>
-      </div>
+
+          <div v-else class="waiting-message text-center " @click="!startGame ? startInit() : fimGame()">
+            <h1 class="display-4 text-light">Start Game!</h1>
+          </div>
+
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-dark">
+        <div class="container-fluid text-center">
+          <span class="text-light">Marlon Rodrigues - Ciência da computação 2020/5</span>
+        </div>
+      </footer>
+
     </div>
   </div>
-</div>
 
-<script>
-  new Vue({
-    el: '#app',
-    data: {
-      startGame: false,
-      score: 0,
-      corRound: '',
-      message: "Você deve clicar na cor",
-      colors: [ "#0000FF","#008000","#A020F0"],
-      chance: 5,
-      acerto: 0,
-      record: 0,
-    },
-    methods:{
-      startInit(){
-        this.corRound = this.randonColor()
-        this.startGame = !this.startGame
-      }, 
-      randonColor() {
-        let value = Math.floor(Math.random() * 3)
-        color = this.colors[value]
-        return color
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        startGame: false,
+        score: 0,
+        corRound: '',
+        message: "Você deve clicar na cor",
+        colors: ["#FF5722", "#4CAF50", "#2196F3", "#FFC107", "#9C27B0"],
+        tableColors: [],
+        chance: 5,
+        record: 0,
+        timing: 60,
+        intervalId: null,
       },
-      consulta(e){
-        let id = e.attributes[0].nodeValue
-        var elemento = document.getElementById(id);
-        cor = elemento.style.backgroundColor.split('rgb')[1]
+      methods: {
+        startInit() {
+          this.startGame = true
+          this.createNewTable()
+          this.startTiming()
+        },
+        randonColor() {
+          let number = this.colors.length
+          let value = Math.floor(Math.random() * number)
+          color = this.colors[value]
+          return color
+        },
+        createNewTable() {
+          this.corRound = this.randonColor()
 
-        let r = parseInt(cor.split(',')[0].split('(')[1]).toString(16)
-        let g = parseInt(cor.split(' ')[1].split(',')[0]).toString(16)
-        let b = parseInt(cor.split(' ')[2].split(')')[0]).toString(16)
-        
-        let hex = '#'
+          const matriz = [];
+          for (let linha = 0; linha < 8; linha++) {
+            matriz[linha] = [];
+            for (let coluna = 0; coluna < 8; coluna++) {
+              matriz[linha][coluna] = this.randonColor()
+            }
+          }
+          this.tableColors = matriz
+        },
+        consulta(cind, iind) {
+          if (this.tableColors[cind][iind] === this.corRound) {
+            this.score++
+          } else {
+            this.chance--
+          }
 
-        if(r.length === 1){
-          hex = hex + '00';
-        } else {
-          hex = hex + r
-        }
+          if (this.chance === 0) this.fimGame()
+          this.createNewTable()
+        },
+        fimGame() {
+          let textAlert = `O jogo acabou, você fez ${this.score} pontos`
 
-        if(g.length === 1){
-          hex = hex + '00';
-        } else {
-          hex = hex + g
-        }
 
-        if(b.length === 1){
-          hex = hex + '00';
-        } else {
-          hex = hex + b
-        }
-
-        if(hex.toUpperCase() === this.corRound) {
-          document.getElementById(id).style.backgroundColor = this.randonColor();
-          this.maisPonto();
-        } else {
-          this.menosPonto()
-          document.getElementById(id).style.backgroundColor = this.randonColor();
-        }
-      },
-      maisPonto(){
-        this.score += 1;
-        this.acerto += 1;
-        if(this.acerto <= 6) {
-          this.acerto = 1;
-          novaCor = this.randonColor()
-          this.corRound = novaCor
-          document.getElementById('RoundColor').style.backgroundColor = novaCor;
-        }
-      },
-      menosPonto(){
-        this.chance -= 1;
-        if(this.chance === 0) {
-          this.fimGame()
-        }
-      },
-      fimGame(){
-        console.log("passou")
-        if(this.score !== 0) {
-          alert(`O jogo acabou, você fez ${this.score} pontos`)
-          if (this. score > this.record) {
-            alert(`Novo record registrado ${this.score} o antigo foi ${this.record}`)
+          if (this.score > this.record) {
+            textAlert += `\n\nNovo record registrado ${this.score} o antigo foi ${this.record}`
             localStorage.setItem("record", `${this.score}`);
             this.record = this.score
           }
+
+          alert(textAlert)
+
+          this.timing = 60
+          clearInterval(this.intervalId);
+
+          this.startGame = false
+          this.chance = 5
+          this.score = 0
+          this.acerto = 0
+
+        },
+        startTiming() {
+
+          this.intervalId = setInterval(() => {
+            this.timing -= 1
+          }, 1000);
+
+          setTimeout(this.fimGame, 60000);
         }
-        this.startGame = false
-        this.chance = 5
-        this.score = 0
-        this.acerto = 0
+      },
+      created() {
+        if (localStorage.getItem("record") === null) {
+          this.record = 0
+        } else (
+          this.record = parseInt(localStorage.getItem("record"))
+        )
       }
-    },
-    created(){
-      if(localStorage.getItem("record") === null) {
-        this.record = 0
-      } else (
-        this.record = parseInt(localStorage.getItem("record"))
-      )
+    })
+  </script>
+
+  <style>
+    :root {
+      --q-primary: #0194be;
+      --q-secondary: #0fc3e8;
+      --q-accent: #0fc3e8;
+      --q-positive: #21BA45;
+      --q-negative: #C10015;
+      --q-info: #31CCEC;
+      --q-warning: #F2C037;
+      --q-dark: #212529;
+      --q-dark-page: #D6EAF8;
     }
-  })
-</script>
+
+    body {
+      overflow: hidden;
+      background-color: var(--q-dark-page);
+    }
+
+    .bg-q-dark-page {
+      background-color: var(--q-dark-page);
+    }
+
+    .bg-q-primary {
+      background-color: var(--q-primary);
+    }
+
+    .game-container {
+      background-color: var(--q-dark);
+      max-width: 600px;
+      width: 90%;
+    }
+
+    .grid-cell {
+      background-color: var(--q-dark-page);
+      width: 100%;
+      padding-bottom: 100%;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .grid-cell:hover {
+      transform: scale(1.2);
+    }
+
+    .color-indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .text-q-primary {
+      color: var(--q-primary);
+    }
+
+    .text-q-secondary {
+      color: var(--q-secondary);
+    }
+
+    .text-q-accent {
+      color: var(--q-accent);
+    }
+
+    .text-q-positive {
+      color: var(--q-positive);
+    }
+
+    .text-q-negative {
+      color: var(--q-negative);
+    }
+
+    .text-q-info {
+      color: var(--q-info);
+    }
+
+    .text-q-warning {
+      color: var(--q-warning);
+    }
+
+    .btn-q-positive {
+      background-color: var(--q-positive);
+      color: white;
+    }
+
+    .btn-q-negative {
+      background-color: var(--q-negative);
+      color: white;
+    }
+
+    .waiting-message h1 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.8;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.8;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .game-container {
+        width: 95%;
+        padding: 0.5rem !important;
+      }
+
+      .grid-cell {
+        gap: 0.25rem;
+      }
+
+      .navbar span {
+        font-size: 0.9rem;
+      }
+
+      .waiting-message h1 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .grid-container {
+        gap: 0.25rem;
+      }
+
+      .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+      }
+
+      .navbar {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</body>
+
+</html>
